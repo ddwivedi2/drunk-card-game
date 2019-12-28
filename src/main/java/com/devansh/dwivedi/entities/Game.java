@@ -1,37 +1,45 @@
-package com.devansh.dwivedi;
+package com.devansh.dwivedi.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.devansh.dwivedi.entities.Deck;
-import com.devansh.dwivedi.entities.Player;
+public class Game {
+    Player[] players;
+    Deck deck;
 
-/**
- * Aloha, buzzed card lovers
- */
-public class App 
-{
+    public Game(Player[] players, Deck deck){
+        this.players = players;
+        this.deck = deck;
+    }
 
-    static int PLAYER_COUNT = 4;
-    static int CARD_COUNT = 3;
-    public static void main( String[] args )
-    {
-        Deck deck = new Deck();
-        deck.shuffle();
+    public void shuffleDeck(){
+        this.deck.shuffle();
+    }
 
-        Player[] players = new Player[PLAYER_COUNT];
+    public void displayScores(){
+        for(int i=0;i<players.length;i++){
+            System.out.println(players[i]);
+        }
+    }
 
+    public void distributeCards(int cardCount){
         for(int i=0;i<players.length;i++){
             players[i] = new Player(i);
-            for(int j=0;j<CARD_COUNT;j++){
+            for(int j=0;j<cardCount;j++){
                 players[i].getHand().add(deck.dealCard());
             }
         }
-        //Current state of cards after shuffling and dealing
+    }
+
+    public Player determineWinner(){
+        System.out.println("============================================");
+        System.out.println("Calculating scores");
+        System.out.println("============================================");
         for(int i=0;i<players.length;i++){
             players[i].calculateScore();
         }
 
+        //Using List of winners Data structure for handling ties, the code will only terminate once this list has a size of one
         List<Player> winners = new ArrayList<Player>();
         int topScore = 0;
         for(int i=0;i<players.length;i++){
@@ -45,27 +53,26 @@ public class App
         }
 
         if(winners.size() == 1){
-            for(int i=0;i<players.length;i++){
-                System.out.println(players[i]);
-            }
-            System.out.println(winners.get(0).toString() + " won");
+            displayScores();
+            return winners.get(0);
         }else{
-            HandleTieBreak(deck, players, winners);
+            return HandleTieBreak(winners);
         }
     }
 
-    public static void HandleTieBreak(Deck deck, Player[] players, List<Player> winners){
+    public Player HandleTieBreak(List<Player> winners){
         while(deck.getSizeOfDeck() > 0){
             for(Player tiedPlayer : winners){
                 tiedPlayer.setTieBreaker(deck.dealCard());
                 if(deck.getSizeOfDeck() == 0){
-                    System.out.println("No winner was found");
+                    return null;
                 }
             }
             winners.clear();
             int tiedTopScore = 0;
             for(int i=0;i<players.length;i++){
                 if(players[i].getTieBreaker() != null){
+                    //TODO: Handle Aces
                     if(players[i].getTieBreaker().getValue() > tiedTopScore){
                         winners.clear();
                         winners.add(players[i]);
@@ -76,12 +83,10 @@ public class App
                 }
             }
             if(winners.size() == 1){
-                for(int i=0;i<players.length;i++){
-                    System.out.println(players[i]);
-                }
-                System.out.println(winners.get(0).toString() + " won");
-                break;
+                displayScores();
+                return winners.get(0);
             }
         }
+        return null;
     }
 }
