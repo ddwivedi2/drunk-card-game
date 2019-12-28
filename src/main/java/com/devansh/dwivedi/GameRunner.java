@@ -15,12 +15,12 @@ public class GameRunner
 
     //Runs a game, taking a parameter which determines if shuffling and distribution should be done
     //which is a valid case for a general (random) execution through static main method but for Unit test cases
-    //we want to be able to assign particular cards to particular players for validation
+    //we want to be able to assign particular cards to particular players for validation (Refer : Unit Test Cases)
 
     public Player runGame(Player[] players, Deck deck, Game game, boolean shuffleAndDistribute) {
         if(shuffleAndDistribute){
             game.shuffleDeck();
-            game.distributeCards(CARD_COUNT);
+            game.distributeCards();
         }
         Player winner = game.determineWinner();
         System.out.println("============================================");
@@ -32,10 +32,10 @@ public class GameRunner
     {
         Deck deck = new Deck();
         Player[] players = new Player[PLAYER_COUNT];
-        Game game = new Game(players, deck);
+        Game game = new Game(players, deck, CARD_COUNT);
 
         GameRunner gameRunner = new GameRunner();
-        Player winner = gameRunner.runGame(players, deck, game, true);
+        gameRunner.runGame(players, deck, game, true);
         
         //Current state of cards after shuffling and dealing
         

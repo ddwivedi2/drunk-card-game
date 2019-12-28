@@ -6,10 +6,12 @@ import java.util.List;
 public class Game {
     Player[] players;
     Deck deck;
+    int cardCount;
 
-    public Game(Player[] players, Deck deck){
+    public Game(Player[] players, Deck deck, int cardCount){
         this.players = players;
         this.deck = deck;
+        this.cardCount = cardCount;
     }
 
     public void shuffleDeck(){
@@ -22,7 +24,7 @@ public class Game {
         }
     }
 
-    public void distributeCards(int cardCount){
+    public void distributeCards(){
         for(int i=0;i<players.length;i++){
             players[i] = new Player(i);
             for(int j=0;j<cardCount;j++){
@@ -60,11 +62,16 @@ public class Game {
         }
     }
 
+    //If we have a tie-break, means we have multiple winners,
+    //here we will keep looping until we reduce the List of Winners to be exactly one
+    //at the end of a face-off
     public Player HandleTieBreak(List<Player> winners){
         while(deck.getSizeOfDeck() > 0){
             for(Player tiedPlayer : winners){
                 tiedPlayer.setTieBreaker(deck.dealCard());
                 if(deck.getSizeOfDeck() == 0){
+                    //In the very rare case that in a face off, the same equivalent cards are drawn 
+                    //until the deck itself finishes
                     return null;
                 }
             }

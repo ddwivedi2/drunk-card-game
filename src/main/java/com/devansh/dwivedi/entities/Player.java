@@ -6,6 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * The idea is to keep a hand for maintaing the dealed card and keeping a tieBreaker reference
+ * which would be one card instead of a list because tiebreakers will be only one card at a time
+ * The scoring model has three main rules:
+ * Trail has the highest value, so any hand with a trail in it will get a boost of 10,000 points
+ * Sequence will get a boost of 1000 points
+ * Pair will get a boost of 100 points
+ */
 public class Player {
     List<Card> hand;
     int score;
@@ -44,10 +52,13 @@ public class Player {
         for(Card card:this.hand){
             sum += card.getValue();
             if(card.getValue() > max){
+                //Keeping track of max card in the hand
                 max = card.getValue();
             }
         }
 
+        //Using a HashMap to store the Cards against Number so we can easily determine whetther
+        //the hand is a sequence, a trail or a pair
         Map<Integer, List<Card>> cardMap = new HashMap<Integer, List<Card>>();
         boolean isPair = false;
         int pairKey = 0;

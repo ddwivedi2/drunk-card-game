@@ -32,20 +32,19 @@ public class GameRunnerTest {
     private Game game;
 
     /**
-     * Create the test case
-     *
-     * @param testName name of the test case
+     * Setting up the Deck, Player and Game instances 
      */
     @BeforeEach
     public void GameRunnerTestInit() {
 
+        int cardCount = 4;
         System.out.println("===================BEFORE EVERY TEST==========================");
         this.deck = new Deck();
-        this.players = new Player[4];
-        for (int i = 0; i < 4; i++) {
+        this.players = new Player[cardCount];
+        for (int i = 0; i < cardCount; i++) {
             this.players[i] = new Player(i);
         }
-        this.game = new Game(players, deck);
+        this.game = new Game(players, deck, 4);
     }
 
     private void distributeCards(Map<Integer, List<Card>> cardDis) throws Exception {
@@ -60,6 +59,7 @@ public class GameRunnerTest {
         }
     }
 
+    //Testing a scenario where we have one trail
     @Test
     public void testAppWithTrail() throws Exception {
         Map<Integer, List<Card>> cardDis = new HashMap<Integer, List<Card>>();
@@ -80,6 +80,7 @@ public class GameRunnerTest {
         assertEquals(winner.getID(), 0);
     }
 
+    //Testing a scenario where we have two trails, higher trail value should win
     @Test
     public void testAppWithTwoTrails() throws Exception {
         Map<Integer, List<Card>> cardDis = new HashMap<Integer, List<Card>>();
@@ -100,6 +101,7 @@ public class GameRunnerTest {
         assertEquals(winner.getID(), 1);
     }
 
+    //Testing a scenario where we have two sequences, higher sequence should win
     @Test
     public void testAppWithTwoSequences() throws Exception {
         Map<Integer, List<Card>> cardDis = new HashMap<Integer, List<Card>>();
@@ -120,6 +122,7 @@ public class GameRunnerTest {
         assertEquals(winner.getID(), 0);
     }
 
+    //Testing a scenario where we a pair in one of the hands
     @Test
     public void testAppwithPair() throws Exception {
         Map<Integer, List<Card>> cardDis = new HashMap<Integer, List<Card>>();
@@ -140,6 +143,7 @@ public class GameRunnerTest {
         assertEquals(winner.getID(), 3);
     }
 
+    //Testing a scenario where we have a high card clash
     @Test
     public void testAppwithClashingHighCard() throws Exception {
         Map<Integer, List<Card>> cardDis = new HashMap<Integer, List<Card>>();
@@ -157,6 +161,8 @@ public class GameRunnerTest {
         GameRunner gameRunner = new GameRunner();
         Player winner = gameRunner.runGame(this.players, this.deck, this.game, false);
         System.out.println(winner);
+
+        //Either Player 0 or Player 3 can win, depending on the random draw face-off
         assertThat(winner.getID(), anyOf(equalTo(0), equalTo(3)));
     }
 }

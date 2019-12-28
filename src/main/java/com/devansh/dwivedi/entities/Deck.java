@@ -9,11 +9,14 @@ import com.devansh.dwivedi.types.Suit;
 public class Deck {
     List<Card> cardDeck;
 
+    /*
+    * Initializing a deck with 52 cards, 1: Ace ..13 King with ENUMS specifying suits
+    */
     public Deck() {
         this.cardDeck = new ArrayList<Card>();
         for(int value = 1 ; value <= 13 ; value++){
             for(Suit suit : Suit.values()){
-             cardDeck.add(new Card(value,suit));
+             cardDeck.add(new Card(value, suit));
             }
         }
     }
@@ -29,6 +32,10 @@ public class Deck {
         Collections.shuffle(cardDeck);
     }
 
+    /*
+    * Deal a particular card from the deck
+    * Thwows exception if the card is missing
+    */
     public Card dealCard(Card card) throws Exception{
         boolean removePossible = cardDeck.remove(card);
         if(!removePossible){
@@ -37,12 +44,14 @@ public class Deck {
         return card;
     }
 
+    /*
+    * Removing the top card from the deck
+    */
     public Card dealCard(){
         Card removedCard = cardDeck.remove(0);
         return removedCard;
     }
 
-    //Size of the deck for testing purpose
     public int getSizeOfDeck(){
         return cardDeck.size();
     }

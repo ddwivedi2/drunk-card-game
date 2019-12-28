@@ -26,6 +26,10 @@ public class Card {
     public void setSuite(Suit suit) {
         this.suit = suit;
     }
+
+    /*
+    * Overriding so this class can be used for generic collection operations
+    */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Card) {
