@@ -29,6 +29,14 @@ public class Deck {
         Collections.shuffle(cardDeck);
     }
 
+    public Card dealCard(Card card) throws Exception{
+        boolean removePossible = cardDeck.remove(card);
+        if(!removePossible){
+            throw new Exception("Card not present");
+        }
+        return card;
+    }
+
     public Card dealCard(){
         Card removedCard = cardDeck.remove(0);
         return removedCard;

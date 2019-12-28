@@ -26,6 +26,14 @@ public class Card {
     public void setSuite(Suit suit) {
         this.suit = suit;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Card) {
+            Card card = (Card) obj;
+            return card.suit == this.suit && card.value == this.value;
+        }
+        return false;
+    }   
 
     @Override
     public String toString() {

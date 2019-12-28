@@ -12,6 +12,10 @@ public class Player {
     Card tieBreaker;
     int playerId;
 
+    public int getID(){
+        return playerId;
+    }
+
     public Player(int id) {
         this.hand = new ArrayList<Card>();
         this.score = 0;
