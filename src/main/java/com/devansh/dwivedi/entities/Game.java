@@ -79,11 +79,15 @@ public class Game {
             int tiedTopScore = 0;
             for(int i=0;i<players.length;i++){
                 if(players[i].getTieBreaker() != null){
-                    //TODO: Handle Aces
-                    if(players[i].getTieBreaker().getValue() > tiedTopScore){
+                    int tieBreakerValue = players[i].getTieBreaker().getValue();
+                    //Handling the case of face-off Ace is considered the highest card
+                    if(tieBreakerValue == 1){
+                        tieBreakerValue = 14;
+                    }
+                    if(tieBreakerValue > tiedTopScore){
                         winners.clear();
                         winners.add(players[i]);
-                        tiedTopScore = players[i].getTieBreaker().getValue();
+                        tiedTopScore = tieBreakerValue;
                     }else if(players[i].getScore() == tiedTopScore){
                         winners.add(players[i]);
                     }
